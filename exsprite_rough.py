@@ -93,3 +93,33 @@ class SpriteSheet(object):
 
 if __name__ == '__main__':
     fire.Fire(SpriteSheet)
+
+# img = io.imread('link.png')
+# background = flood(img[..., 0], (0,0), tolerance=0.0)
+# img[background] = 0
+# show(img, 50)
+# intback = np.invert(background).astype(int)
+
+# structure = np.ones((3, 3), dtype=np.int)
+# labeled, ncomponents = label(intback, structure)
+
+# bound_tups = filter_bounds(get_bounds(intback))
+# labeled_sprites = get_labeled_for_rows(labeled, bound_tups)
+
+# # print('----')
+# # n = 0
+# # for r in labeled_sprites:
+# #     n += len(r)
+# # print(ncomponents, n)
+
+# for r, row in enumerate(labeled_sprites):
+#     print(row)
+#     for i, n in enumerate(row):
+#         filename = f"tmp/g{r}_{i}.png"
+#         raw_inds = np.where(labeled==n)
+#         rrow, rcol = raw_inds
+#         minr, maxr = int(min(rrow)), int(max(rrow))
+#         minc, maxc = int(min(rcol)), int(max(rcol))     
+#         sub_image = img[minr:maxr+1,minc:maxc+1]
+#         #show(sub_image,50)
+#         io.imsave(filename,sub_image)
