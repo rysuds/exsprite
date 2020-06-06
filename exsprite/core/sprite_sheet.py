@@ -11,7 +11,7 @@ from functools import reduce
 from PIL import Image
 import cv2
 import fire
-from utils import show, unique, filter_bounds, get_bounds
+from exsprite.utils import show, unique, filter_bounds, get_bounds
 
 
 def get_chunk(tup, labeled):
@@ -50,7 +50,7 @@ class SpriteSheet(object):
         self.labeled_image=None
         self._get_boolean_image()
         self._get_labeled_image()
-    
+
     def _get_boolean_image(self):
         background = flood(self.img[..., 0], (0,0), tolerance=0.0)
         self.img[background] = 0
@@ -61,7 +61,7 @@ class SpriteSheet(object):
         labeled, ncomponents = label(self.boolean_image, structure)
         self.labeled_image = labeled
         self.num_labels = ncomponents
-    
+
     def _get_sprite_groups(self):
         print(self.boolean_image)
         bound_tups = filter_bounds(get_bounds(self.boolean_image))
@@ -74,7 +74,7 @@ class SpriteSheet(object):
         if foldername not in set(os.listdir()):
             os.mkdir(foldername)
         return foldername
-    
+
     def save(self):
         sprite_groups = self._get_sprite_groups()
         self._check_create_folder()
@@ -86,10 +86,7 @@ class SpriteSheet(object):
                 raw_inds = np.where(self.labeled_image==label)
                 rrow, rcol = raw_inds
                 minr, maxr = int(min(rrow)), int(max(rrow))
-                minc, maxc = int(min(rcol)), int(max(rcol))     
+                minc, maxc = int(min(rcol)), int(max(rcol))
                 sub_image = self.img[minr:maxr+1,minc:maxc+1]
                 #show(sub_image,50)
                 io.imsave(filename,sub_image)
-
-if __name__ == '__main__':
-    fire.Fire(SpriteSheet)
