@@ -1,4 +1,4 @@
-# exsprite
+# ![Exsprite Logo](/assets/title.png)
 A CLI tool for extracting sprites from spritesheets!
 
 ## Setup
