@@ -14,3 +14,9 @@ If you want to group your sprite sheet by rows do
 ```
 exsprite --filename <path to sprite sheet> save
 ```
+
+If you want to group your sprite sheet by columns do
+
+```
+exsprite --filename <path to sprite sheet> --orient col save
+```
