@@ -11,7 +11,7 @@ from functools import reduce
 from PIL import Image
 import cv2
 import fire
-from exsprite.utils import show, unique, filter_bounds, get_bounds
+from exsprite.utils import show, unique, filter_bounds, get_bounds, transpose
 
 
 def get_chunk(tup, labeled):
@@ -38,12 +38,16 @@ def get_labeled_for_rows(labeled, row_tups):
         sprite_rows.append(unique(max_row))
     return sprite_rows
 
-
+# TODO allow foldername kwarg
+# TODO allow for col/row selection
 class SpriteSheet(object):
-    def __init__(self, filename, background=0):
+    def __init__(self, filename, background=0, orient='row'):
         self.filename = filename
         self.foldername = f"{filename.split('.')[0]}_groups"
         self.img = io.imread(filename)
+        self.orient=orient
+        if self.orient=='col':
+            self.img=transpose(self.img)
         self.background=background
         self.boolean_image=None
         self.num_labels=None
@@ -63,12 +67,12 @@ class SpriteSheet(object):
         self.num_labels = ncomponents
 
     def _get_sprite_groups(self):
-        print(self.boolean_image)
         bound_tups = filter_bounds(get_bounds(self.boolean_image))
         sprite_groups = get_labeled_for_rows(self.labeled_image, bound_tups)
         return sprite_groups
 
     #TODO allow for custom foldernames
+    # TODO fix bug for allowing existing foldername (verify whole path exists)
     def _check_create_folder(self,foldername=None):
         foldername = foldername if foldername else self.foldername
         if foldername not in set(os.listdir()):
@@ -88,5 +92,7 @@ class SpriteSheet(object):
                 minr, maxr = int(min(rrow)), int(max(rrow))
                 minc, maxc = int(min(rcol)), int(max(rcol))
                 sub_image = self.img[minr:maxr+1,minc:maxc+1]
+                if self.orient=='col':
+                    sub_image = transpose(sub_image)
                 #show(sub_image,50)
-                io.imsave(filename,sub_image)
+                io.imsave(filename,sub_image,check_contrast=False)

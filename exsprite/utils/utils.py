@@ -1,5 +1,9 @@
 import matplotlib.pyplot as plt
+import numpy as np
 from skimage import io, data, filters
+
+def transpose(img_array):
+    return np.array([list(i) for i in zip(*img_array)])
 
 def centroid(t1,t2):
     return (int(sum(t1)/2), int(sum(t2)/2))
