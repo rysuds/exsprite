@@ -12,11 +12,15 @@ python setup.py install
 If you want to group your sprite sheet by rows do
 
 ```
-exsprite --filename <path to sprite sheet> save
+exsprite --filepath <path_to_sprite_sheet> save
 ```
 
-If you want to group your sprite sheet by columns do
+The default grouping is by rows, however if you'd like to group your sprite sheet by columns, do
 
 ```
-exsprite --filename <path to sprite sheet> --orient col save
+exsprite --filepath <path_to_sprite_sheet> --group col save
+```
+By default an output folder with your grouped sprite will be generated in the same dir as your spritesheet. If yopu'd like to control the name/location of the output folder path you can do
+```
+exsprite --filepath <path_to_sprite_sheet> --folderpath <path_to_output_folder> save
 ```
