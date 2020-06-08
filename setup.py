@@ -7,13 +7,11 @@ with open('README.md') as readme_file:
     readme = readme_file.read()
 
 requirements = ['numpy',
-                'Pillow',
                 'scikit-image',
                 'scipy',
-                'opencv-python',
                 'fire',
                 'matplotlib'
-            ]
+                ]
 
 setup(
     author="Ryan Sudhakaran",

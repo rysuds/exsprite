@@ -1,6 +1,6 @@
 import matplotlib.pyplot as plt
 import numpy as np
-from skimage import io, data, filters
+from skimage import io
 
 def transpose(img_array):
     return np.array([list(i) for i in zip(*img_array)])
@@ -8,7 +8,6 @@ def transpose(img_array):
 def centroid(t1,t2):
     return (int(sum(t1)/2), int(sum(t2)/2))
 
-# Todo refactor to check set of sets for largest then retrieve row
 def unique(array, ignore=[0]):
     ignore = set(ignore)
     seen = set()

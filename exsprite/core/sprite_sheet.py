@@ -1,17 +1,10 @@
 import os
-import math
+from functools import reduce
 import numpy as np
 from skimage import io
-from skimage.exposure import histogram
-from skimage.measure import label
-from skimage.segmentation import flood, flood_fill
-from scipy import ndimage
+from skimage.segmentation import flood
 from scipy.ndimage.measurements import label
-from functools import reduce
-from PIL import Image
-import cv2
-import fire
-from exsprite.utils import show, unique, filter_bounds, get_bounds, transpose
+from exsprite.utils import unique, filter_bounds, get_bounds, transpose
 
 
 def get_chunk(tup, labeled):
@@ -29,7 +22,7 @@ def get_labeled_for_rows(labeled, row_tups):
         max_row = []
         chunk = get_chunk(tup, labeled)
         chunk_set = get_chunk_set(chunk)
-        sorted_rows = sorted(chunk, key=lambda x: len(x), reverse=True)
+        sorted_rows = sorted(chunk, key=len, reverse=True)
         if not sorted_rows:
             continue
         while set(max_row) != chunk_set:
@@ -44,13 +37,13 @@ class SpriteSheet(object):
         self.filepath = filepath
         self.folderpath = folderpath if folderpath else f"{filepath.split('.')[0]}_groups"
         self.img = io.imread(filepath)
-        self.group=group
-        if self.group=='col':
-            self.img=transpose(self.img)
-        self.background=background
-        self.boolean_image=None
-        self.num_labels=None
-        self.labeled_image=None
+        self.group = group
+        if self.group == 'col':
+            self.img = transpose(self.img)
+        self.background = background
+        self.boolean_image = None
+        self.num_labels = None
+        self.labeled_image = None
         self._get_boolean_image()
         self._get_labeled_image()
 
@@ -84,13 +77,13 @@ class SpriteSheet(object):
         for group_num, group in enumerate(sprite_groups):
             group_folderpath = f"{self.folderpath}/{self.group}_{group_num}"
             self._check_create_folder(group_folderpath)
-            for i, label in enumerate(group):
+            for i, label_num in enumerate(group):
                 filepath = f"{group_folderpath}/{self.group}{group_num}_{i}.png"
-                raw_inds = np.where(self.labeled_image==label)
+                raw_inds = np.where(self.labeled_image == label_num)
                 rrow, rcol = raw_inds
                 minr, maxr = int(min(rrow)), int(max(rrow))
                 minc, maxc = int(min(rcol)), int(max(rcol))
-                sub_image = self.img[minr:maxr+1,minc:maxc+1]
-                if self.group=='col':
+                sub_image = self.img[minr:maxr+1, minc:maxc+1]
+                if self.group == 'col':
                     sub_image = transpose(sub_image)
-                io.imsave(filepath,sub_image,check_contrast=False)
+                io.imsave(filepath, sub_image, check_contrast=False)
