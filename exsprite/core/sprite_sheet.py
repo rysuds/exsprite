@@ -41,12 +41,12 @@ def get_labeled_for_rows(labeled, row_tups):
 # TODO allow foldername kwarg
 # TODO allow for col/row selection
 class SpriteSheet(object):
-    def __init__(self, filename, background=0, orient='row'):
+    def __init__(self, filename, background=0, group='row'):
         self.filename = filename
         self.foldername = f"{filename.split('.')[0]}_groups"
         self.img = io.imread(filename)
-        self.orient=orient
-        if self.orient=='col':
+        self.group=group
+        if self.group=='col':
             self.img=transpose(self.img)
         self.background=background
         self.boolean_image=None
@@ -92,7 +92,7 @@ class SpriteSheet(object):
                 minr, maxr = int(min(rrow)), int(max(rrow))
                 minc, maxc = int(min(rcol)), int(max(rcol))
                 sub_image = self.img[minr:maxr+1,minc:maxc+1]
-                if self.orient=='col':
+                if self.group=='col':
                     sub_image = transpose(sub_image)
                 #show(sub_image,50)
                 io.imsave(filename,sub_image,check_contrast=False)
