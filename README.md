@@ -9,6 +9,7 @@ A CLI tool for extracting sprites from spritesheets!
 - scipy
 - fire
 - matplotlib
+- tqdm
 ```
 
 #### Installation
