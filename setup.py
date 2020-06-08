@@ -10,7 +10,8 @@ requirements = ['numpy',
                 'scikit-image',
                 'scipy',
                 'fire',
-                'matplotlib'
+                'matplotlib',
+                'tqdm'
                 ]
 
 setup(

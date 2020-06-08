@@ -1,4 +1,5 @@
 import os
+from tqdm import tqdm
 from functools import reduce
 import numpy as np
 from skimage import io
@@ -65,10 +66,10 @@ class SpriteSheet(object):
 
     def _check_create_folder(self,folderpath=None):
         folderpath = folderpath if folderpath else self.folderpath
-        if folderpath not in set(os.listdir()):
+        try:
             os.mkdir(folderpath)
-        else:
-            print(f'{folderpath} already exists')
+        except FileExistsError:
+            print(f'Saving to existing folder: {folderpath}')
         return folderpath
 
     def save(self):
@@ -77,13 +78,16 @@ class SpriteSheet(object):
         for group_num, group in enumerate(sprite_groups):
             group_folderpath = f"{self.folderpath}/{self.group}_{group_num}"
             self._check_create_folder(group_folderpath)
-            for i, label_num in enumerate(group):
-                filepath = f"{group_folderpath}/{self.group}{group_num}_{i}.png"
-                raw_inds = np.where(self.labeled_image == label_num)
-                rrow, rcol = raw_inds
-                minr, maxr = int(min(rrow)), int(max(rrow))
-                minc, maxc = int(min(rcol)), int(max(rcol))
-                sub_image = self.img[minr:maxr+1, minc:maxc+1]
-                if self.group == 'col':
-                    sub_image = transpose(sub_image)
-                io.imsave(filepath, sub_image, check_contrast=False)
+            with tqdm(total=len(group)) as pbar:
+                for i, label_num in enumerate(group):
+                    filepath = f"{group_folderpath}/{self.group}{group_num}_{i}.png"
+                    raw_inds = np.where(self.labeled_image == label_num)
+                    rrow, rcol = raw_inds
+                    minr, maxr = int(min(rrow)), int(max(rrow))
+                    minc, maxc = int(min(rcol)), int(max(rcol))
+                    sub_image = self.img[minr:maxr+1, minc:maxc+1]
+                    if self.group == 'col':
+                        sub_image = transpose(sub_image)
+                    io.imsave(filepath, sub_image, check_contrast=False)
+                    pbar.update(1)
+                    pbar.set_description(f"Saving {self.group} {group_num}")
