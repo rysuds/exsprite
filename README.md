@@ -2,7 +2,17 @@
 A CLI tool for extracting sprites from spritesheets!
 
 ## Setup
-This will install all required packages and create the cli command for use
+#### Dependencies
+```
+- numpy
+- scikit-image
+- scipy
+- fire
+- matplotlib
+```
+
+#### Installation
+The following will install all dependencies and create the CLI command
 ```
 python setup.py install
 ```
