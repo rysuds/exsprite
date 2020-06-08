@@ -20,13 +20,13 @@ python setup.py install
 ## Usage
 
 #### Grouping by rows
-![Row Example](/assets/row_group_image.png)
+![Row Example](/assets/column_group_image.png)
 ```
 exsprite save --filepath <path_to_sprite_sheet>
 ```
 
 #### Grouping by columns
-![Column Example](/assets/column_group_image.png)
+![Column Example](/assets/row_group_image.png)
 ```
 exsprite save --filepath <path_to_sprite_sheet> --group col
 ```
