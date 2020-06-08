@@ -38,8 +38,7 @@ def get_labeled_for_rows(labeled, row_tups):
         sprite_rows.append(unique(max_row))
     return sprite_rows
 
-# TODO allow folderpath kwarg
-# TODO allow for col/row selection
+
 class SpriteSheet(object):
     def __init__(self, filepath, folderpath=None, background=0, group='row'):
         self.filepath = filepath
@@ -71,8 +70,6 @@ class SpriteSheet(object):
         sprite_groups = get_labeled_for_rows(self.labeled_image, bound_tups)
         return sprite_groups
 
-    #TODO allow for custom folderpaths
-    # TODO fix bug for allowing existing folderpath (verify whole path exists)
     def _check_create_folder(self,folderpath=None):
         folderpath = folderpath if folderpath else self.folderpath
         if folderpath not in set(os.listdir()):
@@ -96,5 +93,4 @@ class SpriteSheet(object):
                 sub_image = self.img[minr:maxr+1,minc:maxc+1]
                 if self.group=='col':
                     sub_image = transpose(sub_image)
-                #show(sub_image,50)
                 io.imsave(filepath,sub_image,check_contrast=False)
