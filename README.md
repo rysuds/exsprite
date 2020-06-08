@@ -32,7 +32,7 @@ exsprite save --filepath <path_to_sprite_sheet> --group col
 ```
 
 #### Custom output folder
-By default an output folder with your grouped sprite will be generated in the same dir as your spritesheet. If you'd like to control the name/location of the output folder path you can do
+By default an output folder with your grouped sprites will be generated in the same directory as your spritesheet. If you'd like to set the name/location of the output folder path you can do
 ```
 exsprite save --filepath <path_to_sprite_sheet> --folderpath <path_to_output_folder>
 ```
