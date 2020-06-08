@@ -9,6 +9,9 @@ tmp
 # C extensions
 *.so
 
+# Notebooks
+notebooks/
+
 # Distribution / packaging
 .Python
 experiments/
