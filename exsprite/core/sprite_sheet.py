@@ -38,13 +38,13 @@ def get_labeled_for_rows(labeled, row_tups):
         sprite_rows.append(unique(max_row))
     return sprite_rows
 
-# TODO allow foldername kwarg
+# TODO allow folderpath kwarg
 # TODO allow for col/row selection
 class SpriteSheet(object):
-    def __init__(self, filename, background=0, group='row'):
-        self.filename = filename
-        self.foldername = f"{filename.split('.')[0]}_groups"
-        self.img = io.imread(filename)
+    def __init__(self, filepath, folderpath=None, background=0, group='row'):
+        self.filepath = filepath
+        self.folderpath = folderpath if folderpath else f"{filepath.split('.')[0]}_groups"
+        self.img = io.imread(filepath)
         self.group=group
         if self.group=='col':
             self.img=transpose(self.img)
@@ -71,22 +71,24 @@ class SpriteSheet(object):
         sprite_groups = get_labeled_for_rows(self.labeled_image, bound_tups)
         return sprite_groups
 
-    #TODO allow for custom foldernames
-    # TODO fix bug for allowing existing foldername (verify whole path exists)
-    def _check_create_folder(self,foldername=None):
-        foldername = foldername if foldername else self.foldername
-        if foldername not in set(os.listdir()):
-            os.mkdir(foldername)
-        return foldername
+    #TODO allow for custom folderpaths
+    # TODO fix bug for allowing existing folderpath (verify whole path exists)
+    def _check_create_folder(self,folderpath=None):
+        folderpath = folderpath if folderpath else self.folderpath
+        if folderpath not in set(os.listdir()):
+            os.mkdir(folderpath)
+        else:
+            print(f'{folderpath} already exists')
+        return folderpath
 
     def save(self):
         sprite_groups = self._get_sprite_groups()
         self._check_create_folder()
         for group_num, group in enumerate(sprite_groups):
-            group_foldername = f"{self.foldername}/group_{group_num}"
-            self._check_create_folder(group_foldername)
+            group_folderpath = f"{self.folderpath}/{self.group}_{group_num}"
+            self._check_create_folder(group_folderpath)
             for i, label in enumerate(group):
-                filename = f"{group_foldername}/g{group_num}_{i}.png"
+                filepath = f"{group_folderpath}/{self.group}{group_num}_{i}.png"
                 raw_inds = np.where(self.labeled_image==label)
                 rrow, rcol = raw_inds
                 minr, maxr = int(min(rrow)), int(max(rrow))
@@ -95,4 +97,4 @@ class SpriteSheet(object):
                 if self.group=='col':
                     sub_image = transpose(sub_image)
                 #show(sub_image,50)
-                io.imsave(filename,sub_image,check_contrast=False)
+                io.imsave(filepath,sub_image,check_contrast=False)
