@@ -17,7 +17,7 @@ The following will install all dependencies and create the CLI command
 python setup.py install
 ```
 
-## Example usage
+## Usage
 
 #### Grouping by rows
 ![Row Example](/assets/row_group_image.png)
